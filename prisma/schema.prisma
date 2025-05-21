@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  // output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -32,11 +32,11 @@ enum StatusOrder {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(255)
-  email String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
-  role RoleUser @default(customer)
+  id       Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
+  role     RoleUser @default(customer)
 
   orders Order[]
 
@@ -45,9 +45,9 @@ model User {
 }
 
 model Brand {
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(255)
-  logo String @db.VarChar(255)
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(255)
+  logo     String    @db.VarChar(255)
   products Product[]
 
   created_at DateTime @default(now())
@@ -55,8 +55,8 @@ model Brand {
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(255)
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(255)
   products Product[]
 
   created_at DateTime @default(now())
@@ -64,8 +64,8 @@ model Category {
 }
 
 model Location {
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(255)
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(255)
   products Product[]
 
   created_at DateTime @default(now())
@@ -73,18 +73,18 @@ model Location {
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-  brand_id Int 
-  brand Brand @relation(fields: [brand_id], references: [id])
-  category_id Int
-  category Category @relation(fields: [category_id], references: [id])
-  location_id Int
-  location Location @relation(fields: [location_id], references: [id])
-  name String @db.VarChar(255)
-  description String @db.Text
-  price BigInt @db.BigInt
-  stock ProductStock
-  images String[]
+  id           Int            @id @default(autoincrement())
+  brand_id     Int
+  brand        Brand          @relation(fields: [brand_id], references: [id])
+  category_id  Int
+  category     Category       @relation(fields: [category_id], references: [id])
+  location_id  Int
+  location     Location       @relation(fields: [location_id], references: [id])
+  name         String         @db.VarChar(255)
+  description  String         @db.Text
+  price        BigInt         @db.BigInt
+  stock        ProductStock
+  images       String[]
   orderProduct OrderProduct[]
 
   created_at DateTime @default(now())
@@ -92,14 +92,14 @@ model Product {
 }
 
 model Order {
-  id Int @id @default(autoincrement())
-  code String @db.Text @unique
+  id      Int         @id @default(autoincrement())
+  code    String      @unique @db.Text
   user_id Int
-  user User @relation(fields: [user_id], references: [id])
-  total BigInt @db.BigInt
-  status StatusOrder
+  user    User        @relation(fields: [user_id], references: [id])
+  total   BigInt      @db.BigInt
+  status  StatusOrder
 
-  detail OrderDetail?
+  detail   OrderDetail?
   products OrderProduct[]
 
   created_at DateTime @default(now())
@@ -107,27 +107,28 @@ model Order {
 }
 
 model OrderDetail {
-  id Int @id @default(autoincrement())
-  order_id Int @unique
-  order Order @relation(fields: [order_id], references: [id])
-  name String @db.VarChar(255)
-  phone String @db.VarChar(255)
-  address String @db.VarChar(255)
-  city String @db.VarChar(255)
-  postal_code String @db.VarChar(255)
-  notes String? @db.VarChar(255)
+  id          Int     @id @default(autoincrement())
+  order_id    Int     @unique
+  order       Order   @relation(fields: [order_id], references: [id])
+  name        String  @db.VarChar(255)
+  phone       String  @db.VarChar(255)
+  address     String  @db.VarChar(255)
+  city        String  @db.VarChar(255)
+  postal_code String  @db.VarChar(255)
+  notes       String? @db.VarChar(255)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
 model OrderProduct {
-  id Int @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   product_id Int
-  product Product @relation(fields: [product_id], references: [id])
-  order_id Int
-  order Order @relation(fields: [order_id], references: [id])
+  product    Product @relation(fields: [product_id], references: [id])
+  order_id   Int
+  order      Order   @relation(fields: [order_id], references: [id])
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
+ 
