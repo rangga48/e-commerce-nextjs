@@ -25,12 +25,20 @@ enum ProductStock {
   preorder
 }
 
+enum StatusOrder {
+  pending
+  success
+  failed
+}
+
 model User {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255)
   email String @unique @db.VarChar(255)
   password String @db.VarChar(255)
   role RoleUser @default(customer)
+
+  orders Order[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -77,7 +85,48 @@ model Product {
   price BigInt @db.BigInt
   stock ProductStock
   images String[]
+  orderProduct OrderProduct[]
 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  code String @db.Text @unique
+  user_id Int
+  user User @relation(fields: [user_id], references: [id])
+  total BigInt @db.BigInt
+  status StatusOrder
+
+  detail OrderDetail?
+  products OrderProduct[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model OrderDetail {
+  id Int @id @default(autoincrement())
+  order_id Int @unique
+  order Order @relation(fields: [order_id], references: [id])
+  name String @db.VarChar(255)
+  phone String @db.VarChar(255)
+  address String @db.VarChar(255)
+  city String @db.VarChar(255)
+  postal_code String @db.VarChar(255)
+  notes String? @db.VarChar(255)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model OrderProduct {
+  id Int @id @default(autoincrement())
+  product_id Int
+  product Product @relation(fields: [product_id], references: [id])
+  order_id Int
+  order Order @relation(fields: [order_id], references: [id])
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
